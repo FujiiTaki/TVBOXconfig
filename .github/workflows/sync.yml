@@ -1,0 +1,22 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    - cron: '0 */12 * * *' # 每十二个小时触发一次
+  workflow_dispatch: # 点击按钮手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: 'master'  # 如果你的默认分支是main，请将此处的master替换为main
+      - name: Sync with upstream
+        run: |
+          git remote add upstream https://github.com/gaotianliuyun/gao.git
+          git fetch upstream
+          git merge upstream/master
+          # 如果使用的是main分支，将上面的master替换为main
+          git push
