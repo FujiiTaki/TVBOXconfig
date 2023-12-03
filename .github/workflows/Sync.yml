@@ -1,0 +1,21 @@
+name: Sync Fork
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # 每天的午夜触发
+  workflow_dispatch: # 点击按钮手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Syncing the fork
+        run: |
+          git remote add upstream https://github.com/gaotianliuyun/gao.git
+          git fetch upstream
+          git checkout master
+          git merge upstream/master
+          # 如果使用的是main分支，将上面的master替换为main
+          git push
